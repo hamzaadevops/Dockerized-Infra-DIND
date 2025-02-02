@@ -25,6 +25,11 @@
    docker pull hamzi3307/swiftroc:dashboard
 ```
 
+### Final image:
+```bash
+   hamzi3307/swiftroc:dind
+```
+
 
 # Running the Container with Environment Variables
 Pass environment variables when running the container:
