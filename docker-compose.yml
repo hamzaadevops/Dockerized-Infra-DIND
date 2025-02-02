@@ -1,0 +1,55 @@
+version: '3.9'
+
+services:
+  traefik:
+    image: "traefik:latest"
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"                        # Expose Traefik dashboard (optional; secure later)
+      - "--providers.docker=true"                   # Enable Docker provider
+      - "--entryPoints.web.address=:80"             # HTTP entry point
+      - "--entryPoints.websecure.address=:443"      # HTTPS entry point
+      - "--certificatesResolvers.myresolver.acme.tlsChallenge=true" # Use TLS challenge for Let's Encrypt
+      - "--certificatesResolvers.myresolver.acme.email=hamzaa.devops@gmail.com" # Replace with your email
+      - "--certificatesResolvers.myresolver.acme.storage=/letsencrypt/acme.json" # Persistent storage for certs
+    ports:
+      #      - "80:80"                                     # HTTP port
+      - "443:443"                                   # HTTPS port
+      - "8080:8080"                                 # Traefik dashboard port
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock" # Docker socket for service discovery
+      - "./letsencrypt:/letsencrypt"                # Directory to store Let's Encrypt certificates
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"                       # Enable Traefik routing
+      - "traefik.http.routers.traefik.rule=Host(`traefik.swiftroc.com`)"  # Route traffic to Traefik dashboard
+      - "traefik.http.routers.traefik.entrypoints=websecure"           # Use HTTPS entry point
+      - "traefik.http.routers.traefik.service=api@internal"            # Internal dashboard service
+      - "traefik.http.routers.traefik.tls.certresolver=myresolver"     # Use Let's Encrypt resolver
+
+  portainer:
+    image: "portainer/portainer-ce:latest"
+    container_name: "portainer"
+    restart: always
+    volumes:
+      - "portainer_data:/data"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+    networks:
+      - traefik
+    labels:
+      - "traefik.enable=true"                       # Enable Traefik routing
+      - "traefik.http.routers.portainer.rule=Host(`portainer.swiftroc.com`)"  # Route traffic to Portainer
+      - "traefik.http.routers.portainer.entrypoints=websecure"           # Use HTTPS entry point
+      - "traefik.http.routers.portainer.tls.certresolver=myresolver"     # Use Let's Encrypt resolver
+      - "traefik.http.services.portainer.loadbalancer.server.port=9000"  # Portainer listens on port 9000
+
+volumes:
+  portainer_data:
+  letsencrypt:
+
+networks:
+  traefik:
+    external: true
+

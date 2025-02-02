@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Automated Infrastructure Setup & Domain Management</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css"
+    />
+  </head>
+  <body class="bg-light">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+      <div class="container">
+        <a class="navbar-brand" href="/"
+          >Automated Infrastructure Setup & Domain Management</a
+        >
+        <div class="d-flex">
+          <a href="<%= portainerUrl %>" class="btn btn-outline-primary me-2"
+            >Portainer</a
+          >
+          <a href="<%= traefikUrl %>" class="btn btn-outline-primary me-2"
+            >Traefik</a
+          >
+          <a href="/change-credentials" class="btn btn-outline-primary me-2">
+            Change Credentials
+          </a>
+          <a href="/logout" class="btn btn-danger">Logout</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+      <div class="card mx-auto shadow-sm" style="max-width: 600px">
+        <div class="card-body">
+          <h1 class="card-title text-center mb-4">Deploy Application</h1>
+
+          <!-- Display Output or Error -->
+          <% if (output) { %>
+          <div class="alert alert-success text-center">
+            <strong>Success:</strong> <%= output %>
+          </div>
+          <% } %> <% if (error) { %>
+          <div class="alert alert-danger text-center">
+            <strong>Error:</strong> <%= error %>
+          </div>
+          <% } %>
+
+          <!-- Deployment Form -->
+          <form action="/deploy-app" method="POST">
+            <div class="mb-3">
+              <label for="appName" class="form-label">Application Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="appName"
+                name="appName"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="subDomain" class="form-label">Subdomain</label>
+              <input
+                type="text"
+                class="form-control"
+                id="subDomain"
+                name="subDomain"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="appPort" class="form-label">Application Port</label>
+              <input
+                type="number"
+                class="form-control"
+                id="appPort"
+                name="appPort"
+                required
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="imageName" class="form-label">Image Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="imageName"
+                name="imageName"
+                required
+              />
+            </div>
+
+            <div class="form-check mb-3">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="addChatApp"
+                name="isAddChatApp"
+                value="true"
+              />
+              <label class="form-check-label" for="addChatApp">
+                Enable Chat App Integration
+              </label>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">
+              Deploy Application
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="text-center mt-5 py-3 bg-white shadow-sm">
+      <div class="container">
+        <p class="mb-0">© 2025 Deploy App. All Rights Reserved.</p>
+      </div>
+    </footer>
+
+    <!-- Bootstrap JS (Optional) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

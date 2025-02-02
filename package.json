@@ -1,0 +1,30 @@
+{
+  "name": "portainer-extention",
+  "version": "1.0.0",
+  "description": "This is portainer extent to automated infrastructure setup & domain management",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "Automated",
+    "Infrastructure",
+    "Setup",
+    "&",
+    "Domain",
+    "Management"
+  ],
+  "author": "Zeeshan Niaz",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.7",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "nodemon": "^3.1.9",
+    "sqlite3": "^5.1.7"
+  }
+}

@@ -1,0 +1,18 @@
+# Use the Docker-in-Docker image as the base
+FROM docker:dind
+
+# Install required packages
+RUN apk update && apk add --no-cache git openssh jq curl bash nodejs npm
+
+# Set the working directory
+WORKDIR /app
+
+# Copy all project files into the container
+COPY . .
+
+# Make the script executable
+RUN chmod +x ./scripts/all_in_one.sh
+
+# Set the default command to run the script with environment variables as arguments
+ENTRYPOINT ["/bin/bash", "./scripts/all_in_one.sh"]
+
